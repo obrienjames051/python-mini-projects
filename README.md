@@ -3,6 +3,7 @@ This repository contains a collection of small Python projects I built while lea
 
 Projects include:
 - Dice Roller: A simple program that lets the user roll any number of dice, each with a chosen number of sides.
+- Dice Roller GUI: A graphical version of the dice roller built using Tkinter. Requires the Pillow library for loading and displaying the dice image.
 - Number Guessing Game: A simple console-based game where the player tries to guess a random number.
 - Password Generator: A program that generates secure passwords of a chosen length (containing at least one lowercase letter, one uppercase letter, one digit, and one special character). It can also store and display existing passwords.
 - To-Do List: A simple task tracker that allows users to add, view, and save their to-do items.
