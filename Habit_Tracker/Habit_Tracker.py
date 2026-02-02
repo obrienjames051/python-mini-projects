@@ -67,16 +67,84 @@ def create_habit():
         }
     
     else:
-        print('Invalid choice. Habit not created.')
+        print('\nInvalid choice. Habit not created.')
         return
     
     data['habits'][habit_name] = habit_data #adds the new habit to the habits section of the data dictionary
     save_data(data)
-    print(f'Habit "{habit_name}" created successfully!') #f-string lets you put variables inside strings
+    print(f'\nHabit "{habit_name}" created successfully!') #f-string lets you put variables inside strings
 
 def log_today_habits():
     data = load_data()
 
+    if not data['habits']:
+        print('\nNo habits found. Please create a habit first.')
+        return #cancels the whole function and returns to the main menu loop
+    
+    if today_str not in data['logs']: #checks if there is already a log for today
+        data['logs'][today_str] = {} #creates an empty log for today if not
+
+    for habit_name, habit_info in data['habits'].items(): #habit_name becomes the key, habit_info becomes the value (dictionary in this case)
+        # .items() returns both the key and value from the dictionary
+
+        if not habit_info.get('active', True): #checks the dictionary habit_info for the key 'active'
+            continue #skips inactive habits
+
+        habit_type = habit_info['type'] #binary or quantitive
+        unit = habit_info.get('unit', '') #gets the unit if it exists, otherwise returns '' - an empty string
+
+        if habit_name in data ['logs'][today_str]:
+            while True:
+                choice = input (f'"{habit_name}" already logged. Overwrite? (y = overwrite, s = skip): ').strip().lower()
+
+                if choice == 's':
+                    break # exits the while loop (later the program skips to the net habit if choice is 's')
+                elif choice == 'y':
+                    pass #continues to the logging section below. Used when you must have some code in the block and jsut tells the program to move on
+                else:
+                    print("Invalid input. Enter 'y' or 's'. ")
+                    continue #skips the rest of the while loop and runs it again
+
+                break # exits the while loop and continues the rest of the function
+        
+        else:
+            choice = 'y' #if the habit hasn't been logged, this will avoid an error in the next line
+
+        if choice == 's':
+            continue #skips to the next habit in the loop
+
+        if habit_type == 'binary':
+            while True:
+                completed = input(f'Did you complete "{habit_name}" today? (y/n): ').strip().lower()
+
+                if completed == 'y':
+                    data['logs'][today_str][habit_name] = True #marks the habit as done
+                    break #exits the inner while loop
+                
+                elif completed == 'n':
+                    data['logs'][today_str][habit_name] = False #marks the habit as not done
+                    break #exits the inner while loop
+
+                else:
+                    print("Invalid input. Please enter 'y' or 'n'.")
+
+        elif habit_type == 'quantitive':
+            while True:
+                value = input(f'How many {unit} did you log for "{habit_name}" today? ').strip() # "" marks around {habit_name} is simply a design choice
+
+                try: # try is used to catch errors that may occur in the block
+                    value = float(value)
+                    if value < 0:
+                        print('Value cannot be negative. Please enter a valid number.')
+                        continue #repeats the inner while loop
+                    data['logs'][today_str][habit_name] = value
+                    break #exits the inner while loop
+
+                except ValueError: #loops back to the start of the inner while loop if the value cannot be converted to a float
+                    print('Invalid input. Please enter a numeric value.')
+        
+    save_data(data)
+    print("\nToday's habits logged successfully!")
 
 print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
 
@@ -90,11 +158,11 @@ while True:
       '\nExit')
         choice = input('\nEnter your choice: ').lower()
 
-        if choice == 'create habits' or choice == 'create habit':
+        if choice == 'create habits' or choice == 'create habit' or choice == 'create':
             create_habit()
 
-        elif choice == 'log today\'s habits' or choice == 'log habits' or choice == 'log habit':
-            print('logged')
+        elif choice == 'log today\'s habits' or choice == 'log habits' or choice == 'log habit' or choice == 'log':
+            log_today_habits()
 
         elif choice == 'view habit stats' or choice == 'view stats' or choice == 'habit stats':
             print('stats')
@@ -107,7 +175,7 @@ while True:
             break
 
         else:
-            print('Please enter a valid input.')
+            print('\nPlease enter a valid input.')
     
     except ValueError:
         print('Please enter a valid input.')

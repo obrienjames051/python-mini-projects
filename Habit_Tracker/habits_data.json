@@ -1,4 +1,21 @@
 {
-  "habits": {},
-  "logs": {}
+  "habits": {
+    "walk the dogs": {
+      "type": "binary",
+      "created": "2026-02-02",
+      "active": true
+    },
+    "coding": {
+      "type": "quantitive",
+      "unit": "hours",
+      "created": "2026-02-02",
+      "active": true
+    }
+  },
+  "logs": {
+    "2026-02-02": {
+      "walk the dogs": true,
+      "coding": 2.5
+    }
+  }
 }
