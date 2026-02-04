@@ -21,16 +21,29 @@
       "unit": "hours",
       "created": "2026-02-03",
       "active": true
+    },
+    "go to the gym": {
+      "type": "binary",
+      "created": "2026-02-03",
+      "active": true
     }
   },
   "logs": {
     "2026-02-02": {
       "walk the dogs": true,
-      "coding": 2.5
+      "coding": 3.5
     },
     "2026-02-03": {
-      "walk the dogs": false,
-      "coding": 1.0
+      "walk the dogs": true,
+      "coding": 2.5,
+      "practice guitar": 0.0,
+      "go to the gym": true
+    },
+    "2026-02-04": {
+      "walk the dogs": true,
+      "coding": 2.0,
+      "practice guitar": 0.0,
+      "go to the gym": false
     }
   }
 }

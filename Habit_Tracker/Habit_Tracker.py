@@ -157,7 +157,7 @@ def edit_habit_status():
 
     habit_list = list(data['habits'].keys())
 
-    for i, habit_name in enumerate(habit_list, start=1): #.keys() gets the keys from the dictionary. enumerate() adds a counter to the loop, start=1 makes it start from 1
+    for i, habit_name in enumerate(habit_list, start=1):
         status = 'active' if data['habits'][habit_name]['active'] else 'inactive' #ternary operator, a one-line if-else statement
         print(f'{i}. {habit_name} ({status})')
     
@@ -187,6 +187,63 @@ def edit_habit_status():
 
     print(f"\n{habit_name} is now {'active' if new_status else 'inactive'}.")
 
+def view_habit_stats():
+    data = load_data()
+
+    if not data['habits']: #stops the function if there are no habits
+        print('\nNo habits found. Please create a habit first.')
+        return #cancels the whole function and returns to the main menu loop
+    
+    print('\nHabit Statistics (active only):\n')
+
+    for habit_name, habit_info in data['habits'].items(): # .items() returns both the key and value from the dictionary
+        if not habit_info.get('active', True):
+            continue #skips the iteration of the for loop for inactive habits
+
+        habit_type = habit_info['type']
+        created = habit_info['created']
+        unit = habit_info.get('unit', '') #only for quantative habits, empty string otherwise
+
+        days_logged = 0
+        days_completed = 0
+        total_units = 0
+
+        for log_date, daily_log in data['logs'].items(): # runs through each date and looks for the specific habit
+            if habit_name not in daily_log:
+                continue #skips if the habit wasn't logged that day
+            days_logged += 1
+            value = daily_log[habit_name] #gets the logged value for that habit on that day
+
+            if habit_type == 'binary': #counts days completed for binary habits
+                if value is True:
+                    days_completed += 1
+                
+            elif habit_type == 'quantitative': #counts totals for quantative habits
+                total_units += value
+        
+        print(f'Habit: {habit_name}')
+        print(f'Type: {habit_type}')
+        print(f'Created on: {created}')
+        print(f'Days logged: {days_logged}')
+
+        if habit_type == 'binary': #days completed for binary habits
+            print(f'Days completed: {days_completed}')
+            if days_logged > 0:
+                completion_rate = (days_completed / days_logged) * 100
+                print(f'Completion rate: {completion_rate:.2f}%') #:.2f limits to 2 decimal places
+            else:
+                print('Completion rate: N/A')
+        
+        elif habit_type == 'quantitative': #averages for quantative habits
+            print(f'Total: {total_units} {unit}')
+            if days_logged > 0:
+                average = total_units / days_logged
+                print(f'Average per day logged: {average:.2f} {unit}')
+            else:
+                print('Average per day logged: N/A')
+
+        print('-' * 30) #prints a line of dashes to separate the stats for each habit
+
 print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
 
 #main menu loop
@@ -210,8 +267,8 @@ while True:
         elif choice == 'log today\'s habits' or choice == 'log habits' or choice == 'log habit' or choice == 'log':
             log_today_habits()
 
-        elif choice == 'view habit stats' or choice == 'view stats' or choice == 'habit stats':
-            print('stats')
+        elif choice == 'view habit stats' or choice == 'view stats' or choice == 'habit stats' or choice == 'stats':
+            view_habit_stats()
         
         elif choice == 'view weekly summary' or choice == 'weekly summary' or choice == 'view summary':
             print('summary')
