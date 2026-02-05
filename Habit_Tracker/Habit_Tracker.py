@@ -1,7 +1,6 @@
 import json
 import os # For file operations
-from datetime import date
-from datetime import timedelta # timedelta represents a difference in time
+from datetime import date, timedelta # timedelta represents a difference in time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # Directory of the current script
 data_file = os.path.join(BASE_DIR, "habits_data.json") # Full path to the data file
@@ -270,6 +269,85 @@ def get_dates_in_range(start_date, end_date):
     
     return dates #returns a list of date objects
 
+def calculate_stats_for_range(habit_name, habit_info, start_date, end_date, data):
+    """
+    Calculates statistics for a single habit between start_date and end_date inclusive.
+    Returns a dictionary of computed stats.
+    """
+
+    habit_type = habit_info['type'] #used to determine how the stats are calculated
+    unit = habit_info.get('unit', '') #only for quantative habits, empty string otherwise
+
+    days_logged = 0 #define counters to be used in the loop below
+    days_completed = 0
+    total_units = 0
+
+    for log_date_str, daily_log in data['logs'].items(): # loops through each log and looks for the specific habit
+        log_date = date.fromisoformat(log_date_str) #converts the date string back into a date object
+
+        if log_date_str < start_date or log_date > end_date:
+            continue #skips the iteration of the for loop if the log date is outside the specified range
+
+        if habit_name not in daily_log:
+            continue #skips the iteration of the for loop if the habit wasn't logged that day
+
+        days_logged += 1
+        value = daily_log[habit_name] #gets the logged value for that habit on that day
+
+        if habit_type == 'binary':
+            if value is True:
+                days_completed += 1
+
+        elif habit_type == 'quantitative':
+            total_units += value
+    
+    if habit_type == 'binary':
+        completion_rate = None
+        if days_logged > 0:
+            completion_rate = (days_completed / days_logged) * 100
+        
+        return { #returns a dictionary of the calculated stats
+            'type': 'binary',
+            'days_logged': days_logged,
+            'days_completed': days_completed,
+            'completion_rate': completion_rate
+        }
+    
+    elif habit_type == 'quantitative':
+        average = None
+        if days_logged > 0:
+            average = total_units / days_logged
+        
+        return { #returns a dictionary of the calculated stats
+            'type': 'quantitative',
+            'days_logged': days_logged,
+            'total_units': total_units,
+            'average': average,
+            'unit': unit
+        }
+
+def get_completed_weeks(habit_created_date, today):
+    """
+    Returns a list of (week_start, week_end) tuples for completed weeks,
+    Starting after the habit was created and excluding the current week.
+    """
+
+    completed_weeks = [] #this will store the completed weeks as tuples of (week_start, week_end)
+
+    creation_week_start, _ = get_week_range(habit_created_date) #gets the start of the week for the habit creation date
+    first_week_start = creation_week_start + timedelta(days=7) # avoids the incomplete week of the habit creation
+
+    current_week_start, _ = get_week_range(today) #gets the start of the current week, to exclude it from the completed weeks
+
+    current_week = first_week_start # define loop variable
+
+    while current_week < current_week_start: #loops through all completed weeks
+        week_start = current_week #date object for the start of the week
+        week_end = week_start + timedelta(days=6) #date object for the end of the week
+        completed_weeks.append((week_start, week_end))
+        current_week += timedelta(days=7) #moves to the next week by adding 7 days
+    
+    return completed_weeks #returns a list of tuples of (week_start, week_end)
 
 
 print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
