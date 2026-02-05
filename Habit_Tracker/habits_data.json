@@ -44,6 +44,12 @@
       "coding": 2.0,
       "practice guitar": 0.0,
       "go to the gym": false
+    },
+    "2026-02-05": {
+      "walk the dogs": false,
+      "coding": 5.0,
+      "practice guitar": 0.0,
+      "go to the gym": false
     }
   }
 }

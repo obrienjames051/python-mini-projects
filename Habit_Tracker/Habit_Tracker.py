@@ -285,7 +285,7 @@ def calculate_stats_for_range(habit_name, habit_info, start_date, end_date, data
     for log_date_str, daily_log in data['logs'].items(): # loops through each log and looks for the specific habit
         log_date = date.fromisoformat(log_date_str) #converts the date string back into a date object
 
-        if log_date_str < start_date or log_date > end_date:
+        if log_date < start_date or log_date > end_date:
             continue #skips the iteration of the for loop if the log date is outside the specified range
 
         if habit_name not in daily_log:
@@ -349,19 +349,165 @@ def get_completed_weeks(habit_created_date, today):
     
     return completed_weeks #returns a list of tuples of (week_start, week_end)
 
+def print_week_stats(habit_info, stats):
+    """
+    Prints formatted weekly stats for a single habit.
+    """
+
+    if habit_info['type'] == 'binary': #prints the stats for a binary habit
+        print(f"  Days logged: {stats['days_logged']}")
+        print(f"  Completed days: {stats['days_completed']}")
+
+        if stats ['completion_rate'] is not None:
+            print(f"  Completion rate: {stats['completion_rate']:.2f}%")
+        else:
+            print("  Completion rate: N/A")
+    
+    elif habit_info['type'] == 'quantitative': #prints the stats for a quantative habit
+        unit = habit_info['unit']
+        print(f"  Days logged: {stats['days_logged']}")
+        print(f"  Total {unit}: {stats['total_units']}")
+
+        if stats['average'] is not None:
+            print(f"  Average per day: {stats['average']:.2f} {unit}")
+        else:
+            print("  Average per day: N/A")
+
+def average_weekly_stats(habit_name, habit_info, data, completed_weeks):
+    """
+    Calculates average weekly stats across all completed weeks for a habit.
+    Returns a stats dictionary or None if no valid weeks exist.
+    """
+
+    if not completed_weeks:
+        return None
+    
+    total_days_logged = 0 #define counters to be used in the loop below
+    total_days_completed = 0
+    total_units = 0
+    valid_weeks = 0
+
+    for week_start, week_end in completed_weeks: #loops through each completed week and calculates the stats
+        stats = calculate_stats_for_range(habit_name, habit_info, week_start, week_end, data)
+
+        if stats['days_logged'] == 0:
+            continue #skips weeks where the habit wasn't logged at all
+
+        valid_weeks += 1
+        total_days_logged += stats['days_logged']
+
+        if habit_info['type'] == 'binary': #completed days for binary habits
+            total_days_completed += stats['days_completed']
+        
+        elif habit_info['type'] == 'quantitative': #total units for quantitative habits
+            total_units += stats['total_units']
+    
+    if valid_weeks == 0:
+        return None #if there are no valid weeks, return None to indicate that average stats cannot be calculated
+    
+    average_stats = { #this will store the average stats across all completed weeks
+        'days_logged': total_days_logged / valid_weeks
+    }
+
+    if habit_info['type'] == 'binary': #average completed days and completion rate for binary habits
+        average_stats['days_completed'] = total_days_completed / valid_weeks
+        average_stats['completion_rate'] = (
+            average_stats['days_completed'] / average_stats['days_logged']
+            if average_stats['days_logged'] > 0 else None
+        )
+    
+    elif habit_info['type'] == 'quantitative': #average total units and average per day for quantitative habits
+        average_stats['total'] = total_units / valid_weeks
+        average_stats['average'] = (
+            average_stats['total'] / average_stats['days_logged']
+            if average_stats['days_logged'] > 0 else None
+        )
+    
+    return average_stats
+
+def view_weekly_summary():
+    data = load_data()
+
+    if not data['habits']:
+        print('\nNo habits found. Please create a habit first.')
+        return #cancels the function and returns to the main menu loop
+    
+    if not data['logs']:
+        print('\nNo logs found yet. Please log some habits first.')
+        return #cancels the function and returns to the main menu loop
+    
+    today = date.today()
+
+    # --- week ranges ---
+    current_week_start, current_week_end = get_week_range(today) #gets the monday and sunday of the current week
+
+    last_week_end = current_week_start - timedelta(days=1)
+    last_week_start, _ = get_week_range(last_week_end) #gets the monday and sunday of the last week
+
+    print('\n\n===== WEEKLY SUMMARY =====')
+
+    for habit_name, habit_info in data['habits'].items():
+        if not habit_info.get('active', True):
+            continue #skips inactive habits
+
+        print('\n-----------------------------')
+        print(f'Habit: {habit_name}')
+
+        habit_created = date.fromisoformat(habit_info['created']) #converts the habit creation date from a string back into a date object
+
+        # --- Last completed week ---
+        last_week_stats = calculate_stats_for_range( #calculates the stats for the last week using the function defined above
+            habit_name,
+            habit_info,
+            last_week_start,
+            last_week_end,
+            data
+        )
+
+        print('\nLast Week:')
+        print_week_stats(habit_info, last_week_stats) #uses the function defined above to print the stats for the last week
+
+        # --- Current week so far ---
+        current_week_stats = calculate_stats_for_range( #calculates the stats for the current week using the function defined above
+            habit_name,
+            habit_info,
+            current_week_start,
+            today,
+            data
+        )
+
+        print('\nCurrent week (so far):')
+        print_week_stats(habit_info, current_week_stats) #uses the function defined above to print the stats for the current week
+
+        # --- Average completed week ---
+        completed_weeks = get_completed_weeks(habit_created, today) #gets the completed weeks for that habit using the function defined above
+        avg_stats = average_weekly_stats(
+            habit_name,
+            habit_info,
+            data,
+            completed_weeks
+        )
+
+        print('\nAverage completed week:')
+
+        if avg_stats is None:
+            print('  Not enough data yet.')
+        else:
+            print_week_stats(habit_info, avg_stats) #uses the function defined above to print the average weekly stats
+
 
 print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
 #main menu loop
 while True:
     try:
-        print('\nWhat would you like to do?\n'
+        print('\n\n\nWhat would you like to do?\n'
       '\nCreate habits'
       '\nLog today\'s habits'
       '\nEdit habits'
       '\nView habit stats'
       '\nView weekly summary'
       '\nExit')
-        choice = input('\nEnter your choice: ').lower()
+        choice = input('\nEnter your choice: ').strip().lower()
 
         if choice == 'edit habits' or choice == 'edit habit' or choice == 'edit':
             edit_habit_status()
@@ -375,8 +521,8 @@ while True:
         elif choice == 'view habit stats' or choice == 'view stats' or choice == 'habit stats' or choice == 'stats':
             view_habit_stats()
         
-        elif choice == 'view weekly summary' or choice == 'weekly summary' or choice == 'view summary':
-            print('summary')
+        elif choice == 'view weekly summary' or choice == 'weekly summary' or choice == 'view summary' or choice == 'summary':
+            view_weekly_summary()
 
         elif choice == 'exit' or choice == 'end':
             print('Goodbye!')
