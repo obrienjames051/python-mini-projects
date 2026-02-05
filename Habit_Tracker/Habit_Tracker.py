@@ -242,7 +242,7 @@ def view_habit_stats():
             else:
                 print('Average per day logged: N/A')
 
-        print('-' * 30) #prints a line of dashes to separate the stats for each habit
+        print('-' * 35) #prints a line of dashes to separate the stats for each habit
 
 def get_week_range(date_obj):
     """
@@ -384,7 +384,7 @@ def average_weekly_stats(habit_name, habit_info, data, completed_weeks):
     
     total_days_logged = 0 #define counters to be used in the loop below
     total_days_completed = 0
-    total_units = 0
+    total_overall_units = 0
     valid_weeks = 0
 
     for week_start, week_end in completed_weeks: #loops through each completed week and calculates the stats
@@ -400,7 +400,7 @@ def average_weekly_stats(habit_name, habit_info, data, completed_weeks):
             total_days_completed += stats['days_completed']
         
         elif habit_info['type'] == 'quantitative': #total units for quantitative habits
-            total_units += stats['total_units']
+            total_overall_units += stats['total_units']
     
     if valid_weeks == 0:
         return None #if there are no valid weeks, return None to indicate that average stats cannot be calculated
@@ -412,14 +412,14 @@ def average_weekly_stats(habit_name, habit_info, data, completed_weeks):
     if habit_info['type'] == 'binary': #average completed days and completion rate for binary habits
         average_stats['days_completed'] = total_days_completed / valid_weeks
         average_stats['completion_rate'] = (
-            average_stats['days_completed'] / average_stats['days_logged']
+            average_stats['days_completed'] / average_stats['days_logged'] * 100
             if average_stats['days_logged'] > 0 else None
         )
     
     elif habit_info['type'] == 'quantitative': #average total units and average per day for quantitative habits
-        average_stats['total'] = total_units / valid_weeks
+        average_stats['total_units'] = total_overall_units / valid_weeks
         average_stats['average'] = (
-            average_stats['total'] / average_stats['days_logged']
+            average_stats['total_units'] / average_stats['days_logged']
             if average_stats['days_logged'] > 0 else None
         )
     
@@ -450,7 +450,7 @@ def view_weekly_summary():
         if not habit_info.get('active', True):
             continue #skips inactive habits
 
-        print('\n-----------------------------')
+        print('\n-----------------------------------')
         print(f'Habit: {habit_name}')
 
         habit_created = date.fromisoformat(habit_info['created']) #converts the habit creation date from a string back into a date object

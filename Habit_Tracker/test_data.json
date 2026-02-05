@@ -1,0 +1,228 @@
+{
+  "habits": {
+    "walk the dogs": {
+      "type": "binary",
+      "created": "2026-01-12",
+      "active": true
+    },
+    "coding": {
+      "type": "quantitative",
+      "unit": "hours",
+      "created": "2026-01-12",
+      "active": true
+    },
+    "jogging": {
+      "type": "binary",
+      "created": "2026-01-13",
+      "active": false
+    },
+    "practice guitar": {
+      "type": "quantitative",
+      "unit": "hours",
+      "created": "2026-01-13",
+      "active": true
+    },
+    "go to the gym": {
+      "type": "binary",
+      "created": "2026-01-13",
+      "active": true
+    },
+    "clean": {
+      "type": "binary",
+      "created": "2026-01-19",
+      "active": true
+    }
+  },
+  "logs": {
+    "2026-01-12": {
+      "walk the dogs": true,
+      "coding": 3.5
+    },
+    "2026-01-13": {
+      "walk the dogs": true,
+      "coding": 2.5,
+      "jogging": false,
+      "practice guitar": 1.0,
+      "go to the gym": true
+    },
+    "2026-01-14": {
+      "walk the dogs": true,
+      "coding": 2.0,
+      "jogging": true,
+      "practice guitar": 0.0,
+      "go to the gym": false
+    },
+    "2026-01-15": {
+      "walk the dogs": false,
+      "coding": 5.0,
+      "jogging": true,
+      "practice guitar": 0.5,
+      "go to the gym": false
+    },
+    "2026-01-16": {
+      "walk the dogs": true,
+      "coding": 3.75,
+      "jogging": false,
+      "practice guitar": 1.5,
+      "go to the gym": true
+    },
+    "2026-01-17": {
+      "walk the dogs": true,
+      "coding": 1.25,
+      "jogging": false,
+      "practice guitar": 0.0,
+      "go to the gym": false
+    },
+    "2026-01-18": {
+      "walk the dogs": false,
+      "coding": 0.0,
+      "jogging": false,
+      "practice guitar": 0.0,
+      "go to the gym": false
+    },
+    "2026-01-19": {
+      "walk the dogs": true,
+      "coding": 0.0,
+      "jogging": false,
+      "practice guitar": 1.75,
+      "go to the gym": true,
+      "clean": true
+    },
+    "2026-01-20": {
+      "walk the dogs": true,
+      "coding": 4.0,
+      "jogging": true,
+      "practice guitar": 0.5,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-01-21": {
+      "walk the dogs": false,
+      "coding": 5.25,
+      "jogging": false,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "clean": false
+    },
+    "2026-01-22": {
+      "walk the dogs": true,
+      "coding": 1.5,
+      "jogging": false,
+      "practice guitar": 2.5,
+      "go to the gym": true,
+      "clean": true
+    },
+    "2026-01-23": {
+      "walk the dogs": true,
+      "coding": 3.25,
+      "jogging": true,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "clean": false
+    },
+    "2026-01-24": {
+      "walk the dogs": false,
+      "coding": 1.5,
+      "jogging": false,
+      "practice guitar": 1.75,
+      "go to the gym": true,
+      "clean": false
+    },
+    "2026-01-25": {
+      "walk the dogs": false,
+      "coding": 6.0,
+      "jogging": false,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-01-26": {
+      "walk the dogs": true,
+      "coding": 3.0,
+      "jogging": true,
+      "practice guitar": 0.75,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-01-27": {
+      "walk the dogs": true,
+      "coding": 3.5,
+      "jogging": true,
+      "practice guitar": 1.25,
+      "go to the gym": true,
+      "clean": false
+    },
+    "2026-01-28": {
+      "walk the dogs": true,
+      "coding": 6.0,
+      "jogging": false,
+      "practice guitar": 1.75,
+      "go to the gym": false,
+      "clean": false
+    },
+    "2026-01-29": {
+      "walk the dogs": false,
+      "coding": 4.75,
+      "jogging": false,
+      "practice guitar": 0.25,
+      "go to the gym": true,
+      "clean": false
+    },
+    "2026-01-30": {
+      "walk the dogs": true,
+      "coding": 0.0,
+      "jogging": true,
+      "practice guitar": 2.75,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-01-31": {
+      "walk the dogs": true,
+      "coding": 0.0,
+      "jogging": false,
+      "practice guitar": 2.25,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-02-01": {
+      "walk the dogs": false,
+      "coding": 4.75,
+      "jogging": false,
+      "practice guitar": 0.5,
+      "go to the gym": false,
+      "clean": true
+    },
+    "2026-02-02": {
+      "walk the dogs": true,
+      "coding": 3.5,
+      "jogging": false,
+      "practice guitar": 1.25,
+      "go to the gym": true,
+      "clean": true
+    },
+    "2026-02-03": {
+      "walk the dogs": true,
+      "coding": 2.25,
+      "jogging": true,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "clean": false
+    },
+    "2026-02-04": {
+      "walk the dogs": true,
+      "coding": 5.0,
+      "jogging": true,
+      "practice guitar": 0.75,
+      "go to the gym": false,
+      "clean": false
+    },
+    "2026-02-05": {
+      "walk the dogs": false,
+      "coding": 3.25,
+      "jogging": false,
+      "practice guitar": 1.5,
+      "go to the gym": true,
+      "clean": true
+    }
+  }
+}
