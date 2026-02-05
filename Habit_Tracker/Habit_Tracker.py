@@ -1,6 +1,7 @@
 import json
 import os # For file operations
 from datetime import date
+from datetime import timedelta # timedelta represents a difference in time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # Directory of the current script
 data_file = os.path.join(BASE_DIR, "habits_data.json") # Full path to the data file
@@ -204,13 +205,13 @@ def view_habit_stats():
         created = habit_info['created']
         unit = habit_info.get('unit', '') #only for quantative habits, empty string otherwise
 
-        days_logged = 0
+        days_logged = 0 #defining variables to be used in the loop below
         days_completed = 0
         total_units = 0
 
         for log_date, daily_log in data['logs'].items(): # runs through each date and looks for the specific habit
             if habit_name not in daily_log:
-                continue #skips if the habit wasn't logged that day
+                continue #skips that iteration of the for loop if the habit wasn't logged that day
             days_logged += 1
             value = daily_log[habit_name] #gets the logged value for that habit on that day
 
@@ -218,7 +219,7 @@ def view_habit_stats():
                 if value is True:
                     days_completed += 1
                 
-            elif habit_type == 'quantitative': #counts totals for quantative habits
+            elif habit_type == 'quantitative': #counts totals for quantitative habits
                 total_units += value
         
         print(f'Habit: {habit_name}')
@@ -244,8 +245,34 @@ def view_habit_stats():
 
         print('-' * 30) #prints a line of dashes to separate the stats for each habit
 
-print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
+def get_week_range(date_obj):
+    """
+    given a date object, return Monday to Sunday for the week that date is in.
+    """
 
+    weekday_index = date_obj.weekday() # .weekday() returns an index for each day of the week, Monday = 0, Sunday = 6
+    week_start = date_obj - timedelta(days=weekday_index) # subtracts the weekday index from the date gives you the Monday of that week
+    week_end = week_start + timedelta(days=6) # adds 6 days to the Monday gives you the Sunday of that week
+
+    return week_start, week_end #returns a tuple
+
+def get_dates_in_range(start_date, end_date):
+    """
+    Returns a list of date objects from start_date to end_date inclusive.
+    """
+
+    dates = [] # this will store the date objects in the range
+    current_date = start_date # define loop variable
+
+    while current_date <= end_date: # loop until the current date is after the end date
+        dates.append(current_date)
+        current_date += timedelta(days=1) # adds one day and keeps it as a date object
+    
+    return dates #returns a list of date objects
+
+
+
+print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
 #main menu loop
 while True:
     try:
