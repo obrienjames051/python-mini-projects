@@ -497,6 +497,7 @@ def view_weekly_summary():
 
 
 print(f'\nHello! Today is {today_str}. Welcome to your Habit Tracker!')
+
 #main menu loop
 while True:
     try:
@@ -512,7 +513,7 @@ while True:
         if choice == 'edit habits' or choice == 'edit habit' or choice == 'edit':
             edit_habit_status()
 
-        if choice == 'create habits' or choice == 'create habit' or choice == 'create':
+        elif choice == 'create habits' or choice == 'create habit' or choice == 'create':
             create_habit()
 
         elif choice == 'log today\'s habits' or choice == 'log habits' or choice == 'log habit' or choice == 'log':

@@ -26,6 +26,11 @@
       "type": "binary",
       "created": "2026-02-03",
       "active": true
+    },
+    "care for plants": {
+      "type": "binary",
+      "created": "2026-02-05",
+      "active": true
     }
   },
   "logs": {
@@ -47,9 +52,94 @@
     },
     "2026-02-05": {
       "walk the dogs": false,
-      "coding": 5.0,
+      "coding": 6.0,
       "practice guitar": 0.0,
-      "go to the gym": false
+      "go to the gym": false,
+      "care for plants": false
+    },
+    "2026-02-06": {
+      "walk the dogs": false,
+      "coding": 3.0,
+      "practice guitar": 0.0,
+      "go to the gym": true,
+      "care for plants": true
+    },
+    "2026-02-07": {
+      "walk the dogs": false,
+      "coding": 0.0,
+      "practice guitar": 2.0,
+      "go to the gym": false,
+      "care for plants": true
+    },
+    "2026-02-08": {
+      "walk the dogs": false,
+      "coding": 0.0,
+      "practice guitar": 1.0,
+      "go to the gym": false,
+      "care for plants": false
+    },
+    "2026-02-09": {
+      "walk the dogs": true,
+      "coding": 3.0,
+      "practice guitar": 0.0,
+      "go to the gym": true,
+      "care for plants": false
+    },
+    "2026-02-10": {
+      "walk the dogs": false,
+      "coding": 4.0,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "care for plants": true
+    },
+    "2026-02-11": {
+      "walk the dogs": true,
+      "coding": 2.5,
+      "practice guitar": 0.0,
+      "go to the gym": true,
+      "care for plants": false
+    },
+    "2026-02-12": {
+      "walk the dogs": false,
+      "coding": 4.0,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "care for plants": false
+    },
+    "2026-02-13": {
+      "walk the dogs": true,
+      "coding": 3.5,
+      "practice guitar": 0.0,
+      "go to the gym": true,
+      "care for plants": true
+    },
+    "2026-02-14": {
+      "walk the dogs": false,
+      "coding": 0.0,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "care for plants": false
+    },
+    "2026-02-15": {
+      "walk the dogs": true,
+      "coding": 0.0,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "care for plants": false
+    },
+    "2026-02-16": {
+      "walk the dogs": true,
+      "coding": 0.0,
+      "practice guitar": 0.0,
+      "go to the gym": true,
+      "care for plants": true
+    },
+    "2026-02-17": {
+      "walk the dogs": false,
+      "coding": 1.0,
+      "practice guitar": 0.0,
+      "go to the gym": false,
+      "care for plants": false
     }
   }
 }
